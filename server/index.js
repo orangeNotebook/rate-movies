@@ -35,6 +35,15 @@ app.get("/getAllMovies", (req, res) => {
   );
 });
 
+app.get("/getAllCategories", (req, res) => {
+  connection.query(
+    "SELECT * FROM `rate-movies`.category;",
+    function (error, results) {
+      res.send(results);
+    }
+  );
+});
+
 app.post("/getMovieCategories", (req, res) => {
   let { movieId } = req.body;
 
@@ -50,10 +59,72 @@ app.post("/getMovieCategories", (req, res) => {
 app.post("/getMovieRatings", (req, res) => {
   let { movieId } = req.body;
   connection.query(
-    "SELECT `media-rating`.`id`, `movie-id`, `title`, `user-id`, `userName`, `rating` FROM `media-rating` inner join `media` on `media`.`id` = `media-rating`.`movie-id` inner join `users` on `users`.`id` = `media-rating`.`user-id` where `movie-id` = " +
+    "SELECT `media-rating-simple`.`id`, `movie-id`, `title`, `userName`, `rating` FROM `media-rating-simple` inner join `media` on `media`.`id` = `media-rating-simple`.`movie-id` where `movie-id` =" +
       movieId,
     function (error, results) {
       res.send(results);
+    }
+  );
+});
+
+app.put("/putRating", (req, res) => {
+  let { userInputs } = req.body;
+
+  const insertStatement =
+    "INSERT INTO `rate-movies`.`media-rating-simple` (`movie-id`,`userName`,`rating`) VALUES (?,?,?);";
+
+  const values = [
+    [userInputs.movieId],
+    [userInputs.userName],
+    [userInputs.rating],
+  ];
+  connection.query(insertStatement, values, function (error, results) {
+    if (error) throw error;
+    res.send(results);
+  });
+});
+
+app.put("/putMovie", (req, res) => {
+  let { inputTerms } = req.body;
+
+  function generateQueryMedia() {
+    let values = [[`${inputTerms.title}`]];
+    let insertStatement = "INSERT INTO `media` (`title`) VALUES (?); ";
+
+    return { insertStatement: insertStatement, values: values };
+  }
+
+  function generateQueryCategories() {
+    let values = [];
+    let insertStatement =
+      "INSERT INTO `media-category`(`movie-id`,`category-id`) VALUES";
+
+    for (let i = 0; i < inputTerms.categories.length; i++) {
+      values.push([inputTerms.categories[i]]);
+      insertStatement += " ((SELECT LAST_INSERT_ID() media), ?)";
+      if (i === inputTerms.categories.length - 1) {
+        insertStatement += ";";
+      } else {
+        insertStatement += ",";
+      }
+    }
+
+    return { insertStatement: insertStatement, values: values };
+  }
+
+  connection.query(
+    generateQueryMedia().insertStatement,
+    generateQueryMedia().values,
+    function (error, results) {
+      if (error) throw error;
+      connection.query(
+        generateQueryCategories().insertStatement,
+        generateQueryCategories().values,
+        function (err, result) {
+          if (err) throw err;
+          res.send(result);
+        }
+      );
     }
   );
 });

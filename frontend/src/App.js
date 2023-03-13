@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AllMovies from "./components/AllMovies";
+import CreateRating from "./components/CreateRating";
 
 function App() {
   const [res, setRes] = useState("");
