@@ -10,6 +10,10 @@ body {
   color: white;
 }
 
+.movie-container {
+  background-color: #454b58;
+  padding-left: 10px;
+}
 .articlePreviewContainer {
   background-color: #454b58;
 }

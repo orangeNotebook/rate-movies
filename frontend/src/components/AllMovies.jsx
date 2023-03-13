@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Movie from "./Movie";
 
 function AllMovies(props) {
   return (
@@ -7,7 +8,7 @@ function AllMovies(props) {
       {props.movies.map((movie) => {
         return (
           <>
-            <p>{movie.title}</p>
+            <Movie movie={movie} />
           </>
         );
       })}

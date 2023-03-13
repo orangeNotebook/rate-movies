@@ -5,6 +5,7 @@ const app = express();
 const port = 5000;
 
 app.use(cors());
+app.use(express.json());
 
 const connection = mysql_connector.createConnection({
   host: "localhost",
@@ -33,8 +34,9 @@ app.get("/getAllMovies", (req, res) => {
   );
 });
 
-app.get("/getMovieCategories", (req, res) => {
-  let movieId = req.body.movieId;
+app.post("/getMovieCategories", (req, res) => {
+  let { movieId } = req.body;
+
   connection.query(
     "SELECT `media-category`.`id`, `media-category`.`movie-id`, `category` FROM `media-category` inner join `category` on `media-category`.`category-id` = `category`.`id` where `media-category`.`movie-id` = " +
       movieId,
@@ -44,8 +46,8 @@ app.get("/getMovieCategories", (req, res) => {
   );
 });
 
-app.get("/getMovieRatings", (req, res) => {
-  let movieId = req.body.movieId;
+app.post("/getMovieRatings", (req, res) => {
+  let { movieId } = req.body;
   connection.query(
     "SELECT `media-rating`.`id`, `movie-id`, `title`, `user-id`, `userName`, `rating` FROM `media-rating` inner join `media` on `media`.`id` = `media-rating`.`movie-id` inner join `users` on `users`.`id` = `media-rating`.`user-id` where `movie-id` = " +
       movieId,
