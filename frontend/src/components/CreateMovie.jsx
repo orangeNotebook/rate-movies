@@ -95,34 +95,39 @@ function CreateMovie(props) {
             label="Movie Title"
             variant="outlined"
           />
-
-          <Select
-            labelId="demo-multiple-chip-label"
-            id="demo-multiple-chip"
-            multiple
-            value={selectedCategories}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={categories}
-          >
-            {categories.map((category) => (
-              <MenuItem
-                key={category.category}
-                value={category.id}
-                style={getStyles(category.category, selectedCategories, theme)}
-              >
-                {category.category}
-              </MenuItem>
-            ))}
-          </Select>
-
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={selectedCategories}
+              onChange={handleChange}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={categories}
+            >
+              {categories.map((category) => (
+                <MenuItem
+                  key={category.category}
+                  value={category.category}
+                  style={getStyles(
+                    category.category,
+                    selectedCategories,
+                    theme
+                  )}
+                >
+                  {category.category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Button variant="contained" color="success" onClick={putMovie}>
             Submit
           </Button>
