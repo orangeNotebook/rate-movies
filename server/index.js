@@ -6,12 +6,13 @@ const port = 5000;
 
 app.use(cors());
 app.use(express.json());
+require("dotenv").config();
 
 const connection = mysql_connector.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "rate-movies",
+  host: process.env.HOSTNAME,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
 connection.connect();
