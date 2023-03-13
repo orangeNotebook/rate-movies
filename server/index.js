@@ -101,7 +101,8 @@ app.put("/putMovie", (req, res) => {
 
     for (let i = 0; i < inputTerms.categories.length; i++) {
       values.push([inputTerms.categories[i]]);
-      insertStatement += " ((SELECT LAST_INSERT_ID() media), ?)";
+      insertStatement +=
+        " ((SELECT LAST_INSERT_ID() media), (SELECT id FROM category where category = ?))";
       if (i === inputTerms.categories.length - 1) {
         insertStatement += ";";
       } else {
