@@ -1,11 +1,37 @@
 import "../App.css";
 import React, { useState } from "react";
+import axios from "axios";
 
 import { Stack, Typography, TextField, Button } from "@mui/material";
 
 function CreateRating(props) {
   const [title, setTitle] = useState(props.title || "");
   const [rating, setRating] = useState(0);
+  const [userName, setUserName] = useState("");
+
+  function putReview() {
+    async function apifunc() {
+      const data = {
+        userInputs: {
+          movieId: props.movieId,
+          userName: userName,
+          rating: rating,
+        },
+      };
+      try {
+        const putRating = await axios.put(
+          "http://localhost:5000/putRating",
+          data
+        );
+        console.log(putRating);
+        window.location.reload();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    apifunc();
+  }
 
   return (
     <div className="movie-container">
@@ -15,13 +41,12 @@ function CreateRating(props) {
       <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
         <TextField
           onChange={(event) => {
-            setTitle(event.target.value);
+            setUserName(event.target.value);
           }}
-          value={title}
-          disabled={props.title}
-          id="movie-title"
+          value={userName}
+          id="username"
           color="primary"
-          label="Movie Title"
+          label="Your Name"
           variant="outlined"
         />
         <TextField
@@ -29,12 +54,12 @@ function CreateRating(props) {
             setRating(event.target.value);
           }}
           value={rating}
-          id="movie-title"
+          id="rating"
           color="primary"
           label="Rating (1-10)"
           variant="outlined"
         />
-        <Button variant="contained" color="success">
+        <Button variant="contained" color="success" onClick={putReview}>
           Submit
         </Button>
       </Stack>

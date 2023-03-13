@@ -52,26 +52,31 @@ function Movie(props) {
   if (gotData) {
     return (
       <div className="movie-container">
-        <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
-          <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
-            {props.movie.title}
-          </Typography>
-          {addRatingClicked ? (
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => {
-                setAddRatingClicked(false);
-              }}
-            >
-              Cancel
-            </Button>
-          ) : (
-            <Button onClick={handleClick} variant="contained" color="success">
-              Add a rating
-            </Button>
-          )}
-        </Stack>
+        <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
+          {props.movie.title}
+        </Typography>
+        {addRatingClicked ? (
+          <Button
+            sx={{ marginBottom: "20px" }}
+            variant="contained"
+            color="error"
+            onClick={() => {
+              setAddRatingClicked(false);
+            }}
+          >
+            Cancel
+          </Button>
+        ) : (
+          <Button
+            sx={{ marginBottom: "20px" }}
+            onClick={handleClick}
+            variant="contained"
+            color="success"
+          >
+            Add a rating
+          </Button>
+        )}
+
         <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
           {categories.map((category) => {
             return <Chip color="primary" label={category.category} />;
@@ -80,7 +85,8 @@ function Movie(props) {
         {addRatingClicked ? (
           <CreateRating
             title={props.movie.title}
-            setAddRatingClicked={setAddRatingClicked}
+            movieId={props.movie.id}
+            currentUser={props.currentUser}
           />
         ) : (
           <>
