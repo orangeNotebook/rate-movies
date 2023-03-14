@@ -3,9 +3,14 @@ const mysql_connector = require("mysql");
 const cors = require("cors");
 const path = require("path");
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 require("dotenv").config();
@@ -126,7 +131,7 @@ app.put("/putMovie", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+  res.sendFile(path.join(__dirname, "./public/", "index.html"));
 });
 
 app.listen(port, () => {
