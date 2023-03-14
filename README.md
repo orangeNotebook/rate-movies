@@ -4,7 +4,7 @@ This repo contains the code for rate movies. It is a react/express application f
 
 ## How to run
 
-To run, first update the .env with the correct credentials
+To run, first create a .env in the server with the correct credentials
 
 Next, install dependencies in frontend and server
 
