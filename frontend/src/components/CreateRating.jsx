@@ -5,7 +5,6 @@ import axios from "axios";
 import { Stack, Typography, TextField, Button } from "@mui/material";
 
 function CreateRating(props) {
-  const [title, setTitle] = useState(props.title || "");
   const [rating, setRating] = useState(0);
   const [userName, setUserName] = useState("");
 
