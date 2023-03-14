@@ -1,6 +1,6 @@
 # Rate Movies
 
-This repo contains the code for rate movies. It is a react/express application for rating movies and other medias.
+This repo contains the code for [rate movies](https://rate-movies.azurewebsites.net/). It is a react/express application for rating movies and other medias.
 
 ## How to run
 
