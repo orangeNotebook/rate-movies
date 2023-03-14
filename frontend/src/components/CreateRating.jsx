@@ -5,7 +5,6 @@ import axios from "axios";
 import { Stack, Typography, TextField, Button } from "@mui/material";
 
 function CreateRating(props) {
-  const [title, setTitle] = useState(props.title || "");
   const [rating, setRating] = useState(0);
   const [userName, setUserName] = useState("");
 
@@ -19,10 +18,7 @@ function CreateRating(props) {
         },
       };
       try {
-        const putRating = await axios.put(
-          "http://localhost:5000/putRating",
-          data
-        );
+        const putRating = await axios.put("/putRating", data);
         console.log(putRating);
         window.location.reload();
       } catch (err) {

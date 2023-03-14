@@ -51,7 +51,7 @@ function CreateMovie(props) {
   };
 
   function getAllCategories() {
-    axios.get("http://localhost:5000/getAllCategories").then((response) => {
+    axios.get("/getAllCategories").then((response) => {
       console.log(response.data);
       setCategories(response.data);
       setGotCategories(true);
@@ -64,10 +64,7 @@ function CreateMovie(props) {
         inputTerms: { title: title, categories: selectedCategories },
       };
       try {
-        const putTitle = await axios.put(
-          "http://localhost:5000/putMovie",
-          data
-        );
+        const putTitle = await axios.put("/putMovie", data);
         console.log(putTitle);
         window.location.reload();
       } catch (err) {

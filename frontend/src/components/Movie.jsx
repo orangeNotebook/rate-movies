@@ -21,7 +21,7 @@ function Movie(props) {
       total += ratings[i].rating;
       console.log(total);
     }
-    return total / ratings.length;
+    return Math.round((total / ratings.length) * 10) / 10;
   }
 
   function getData() {
@@ -30,14 +30,8 @@ function Movie(props) {
         movieId: props.movie.id,
       };
       try {
-        const postCateogires = await axios.post(
-          "http://localhost:5000/getMovieCategories",
-          data
-        );
-        const postRatings = await axios.post(
-          "http://localhost:5000/getMovieRatings",
-          data
-        );
+        const postCateogires = await axios.post("/getMovieCategories", data);
+        const postRatings = await axios.post("getMovieRatings", data);
         setCateogires(postCateogires.data);
         setRatings(postRatings.data);
         setGotData(true);
