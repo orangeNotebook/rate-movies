@@ -19,10 +19,7 @@ function CreateRating(props) {
         },
       };
       try {
-        const putRating = await axios.put(
-          "http://localhost:5000/putRating",
-          data
-        );
+        const putRating = await axios.put("/putRating", data);
         console.log(putRating);
         window.location.reload();
       } catch (err) {
