@@ -20,9 +20,6 @@ const connection = mysql_connector.createConnection({
 connection.connect();
 
 //default path
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/", "index.html"));
-});
 
 app.get("/getAllMovies", (req, res) => {
   connection.query(
@@ -126,6 +123,10 @@ app.put("/putMovie", (req, res) => {
       );
     }
   );
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 app.listen(port, () => {
