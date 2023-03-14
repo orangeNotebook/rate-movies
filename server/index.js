@@ -1,16 +1,18 @@
 const express = require("express");
 const mysql_connector = require("mysql");
 const cors = require("cors");
+const path = require("path");
 const app = express();
-const port = 5000;
+const port = 8080;
 
 app.use(cors());
+app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 require("dotenv").config();
 
 const connection = mysql_connector.createConnection({
   host: process.env.HOSTNAME,
-  user: process.env.USER,
+  user: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
@@ -18,12 +20,8 @@ const connection = mysql_connector.createConnection({
 connection.connect();
 
 //default path
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
-
-app.get("/test", (req, res) => {
-  res.send("Testing");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/", "index.html"));
 });
 
 app.get("/getAllMovies", (req, res) => {
