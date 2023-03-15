@@ -135,7 +135,10 @@ function CreateMovie(props) {
             variant="contained"
             color="success"
             disabled={
-              description === "" || title === "" || description.length > 180
+              description === "" ||
+              title === "" ||
+              description.length > 180 ||
+              !selectedCategories[0]
             }
             onClick={putMovie}
           >
