@@ -36,6 +36,7 @@ function getStyles(category, selectedCategories, theme) {
 function CreateMovie(props) {
   const theme = useTheme();
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [gotCategories, setGotCategories] = useState(false);
@@ -63,6 +64,7 @@ function CreateMovie(props) {
       const data = {
         inputTerms: {
           title: title,
+          description: description,
           categories: selectedCategories,
           type: props.selectedType,
         },
@@ -91,9 +93,9 @@ function CreateMovie(props) {
               setTitle(event.target.value);
             }}
             value={title}
-            id="movie-title"
+            id="title"
             color="primary"
-            label="Movie Title"
+            label="Title"
             variant="outlined"
           />
           <FormControl sx={{ m: 1, width: 300 }}>
@@ -129,9 +131,34 @@ function CreateMovie(props) {
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" color="success" onClick={putMovie}>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={
+              description === "" || title === "" || description.length > 180
+            }
+            onClick={putMovie}
+          >
             Submit
           </Button>
+        </Stack>
+        <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
+          <TextField
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+            value={description}
+            multiline
+            minRows={4}
+            sx={{ width: "530px" }}
+            id="description"
+            color="primary"
+            label="Description"
+            variant="outlined"
+          />
+          <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
+            {description.length} / 180
+          </Typography>
         </Stack>
       </div>
     );

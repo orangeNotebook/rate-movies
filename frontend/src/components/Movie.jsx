@@ -52,6 +52,9 @@ function Movie(props) {
         <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
           {props.movie.title}
         </Typography>
+        <Typography variant="h6" component="p" sx={{ paddingBottom: "10px" }}>
+          {props.movie.description}
+        </Typography>
         {addRatingClicked ? (
           <Button
             sx={{ marginBottom: "20px" }}

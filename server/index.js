@@ -48,7 +48,7 @@ app.post("/getMedia", (req, res) => {
   let { type } = req.body;
 
   connection.query(
-    "SELECT `media`.`id`, `title`, `type` FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` join `type` on `type`.`id` = `type-id` where `type` = " +
+    "SELECT `media`.`id`, `title`, `description`, `type` FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` join `type` on `type`.`id` = `type-id` where `type` = " +
       `"${type}"`,
     function (error, results) {
       res.send(results);
@@ -100,8 +100,9 @@ app.put("/putMovie", (req, res) => {
   let { inputTerms } = req.body;
 
   function generateQueryMedia() {
-    let values = [[`${inputTerms.title}`]];
-    let insertStatement = "INSERT INTO `media` (`title`) VALUES (?); ";
+    let values = [[`${inputTerms.title}`], [`${inputTerms.description}`]];
+    let insertStatement =
+      "INSERT INTO `media` (`title`, `description`) VALUES (?, ?); ";
 
     return { insertStatement: insertStatement, values: values };
   }
