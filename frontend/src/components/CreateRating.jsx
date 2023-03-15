@@ -55,7 +55,12 @@ function CreateRating(props) {
           label="Rating (1-10)"
           variant="outlined"
         />
-        <Button variant="contained" color="success" onClick={putReview}>
+        <Button
+          variant="contained"
+          color="success"
+          disabled={rating === "" || userName === "" || Number(rating) >= 10.1}
+          onClick={putReview}
+        >
           Submit
         </Button>
       </Stack>
