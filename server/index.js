@@ -44,6 +44,18 @@ app.get("/getAllCategories", (req, res) => {
   );
 });
 
+app.post("/getMedia", (req, res) => {
+  let { type } = req.body;
+
+  connection.query(
+    "SELECT `media`.`id`, `title`, `type` FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` join `type` on `type`.`id` = `type-id` where `type` = " +
+      `"${type}"`,
+    function (error, results) {
+      res.send(results);
+    }
+  );
+});
+
 app.post("/getMovieCategories", (req, res) => {
   let { movieId } = req.body;
 
@@ -102,13 +114,21 @@ app.put("/putMovie", (req, res) => {
     for (let i = 0; i < inputTerms.categories.length; i++) {
       values.push([inputTerms.categories[i]]);
       insertStatement +=
-        " ((SELECT LAST_INSERT_ID() media), (SELECT id FROM category where category = ?))";
+        " ((SELECT MAX(ID) FROM media), (SELECT id FROM category where category = ?))";
       if (i === inputTerms.categories.length - 1) {
         insertStatement += ";";
       } else {
         insertStatement += ",";
       }
     }
+
+    return { insertStatement: insertStatement, values: values };
+  }
+
+  function generateQueryType() {
+    let values = [[`${inputTerms.type}`]];
+    let insertStatement =
+      "INSERT INTO `media-type`(`movie-id`,`type-id`) VALUES ((SELECT MAX(ID) FROM media), (SELECT `type`.`id` FROM `type` WHERE `type`.`type` = ?))";
 
     return { insertStatement: insertStatement, values: values };
   }
@@ -123,7 +143,14 @@ app.put("/putMovie", (req, res) => {
         generateQueryCategories().values,
         function (err, result) {
           if (err) throw err;
-          res.send(result);
+          connection.query(
+            generateQueryType().insertStatement,
+            generateQueryType().values,
+            function (err2, result2) {
+              if (err2) throw err2;
+              res.send(result2);
+            }
+          );
         }
       );
     }

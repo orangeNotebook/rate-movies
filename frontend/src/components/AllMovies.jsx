@@ -4,22 +4,38 @@ import Movie from "./Movie";
 import { Stack, Chip, Rating, Typography, Box, Button } from "@mui/material";
 import CreateMovie from "./CreateMovie";
 
-function AllMovies() {
-  const [res, setRes] = useState("");
+function AllMovies(props) {
+  const [res, setRes] = useState([]);
   const [newMovieClicked, setNewMovieClicked] = useState(false);
+  const [gotData, setGotData] = useState(false);
 
   useEffect(() => {
-    axios.get("/getAllMovies").then((response) => {
-      console.log(response.data);
-      setRes(response.data);
-    });
-  }, []);
+    getData();
+  }, [props.selectedType]);
+
+  function getData() {
+    async function apifunc() {
+      const data = {
+        type: props.selectedType,
+      };
+      try {
+        const postType = await axios.post("/getMedia", data);
+        setRes(postType.data);
+
+        setGotData(true);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    apifunc();
+  }
 
   function handleClick() {
     setNewMovieClicked(true);
   }
 
-  if (res) {
+  if (gotData) {
     return (
       <div>
         {newMovieClicked ? (
@@ -33,27 +49,29 @@ function AllMovies() {
             >
               Cancel
             </Button>
-            <CreateMovie />
+            <CreateMovie selectedType={props.selectedType} />
           </>
         ) : (
           <>
             {" "}
-            <h2>All Movies</h2>{" "}
+            <Typography variant="h2">All {props.selectedType}s</Typography>
             {res.map((movie) => {
               return (
                 <>
-                  <Movie movie={movie} />
+                  <Movie movie={movie} selectedType={props.selectedType} />
                   <br></br>
                 </>
               );
             })}
             <Button variant="contained" color="success" onClick={handleClick}>
-              Add new movie
+              Add new {props.selectedType}
             </Button>
           </>
         )}
       </div>
     );
+  } else {
+    getData();
   }
 }
 

@@ -35,7 +35,7 @@ function getStyles(category, selectedCategories, theme) {
 
 function CreateMovie(props) {
   const theme = useTheme();
-  const [title, setTitle] = useState(props.title || "");
+  const [title, setTitle] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [gotCategories, setGotCategories] = useState(false);
@@ -61,7 +61,11 @@ function CreateMovie(props) {
   function putMovie() {
     async function apifunc() {
       const data = {
-        inputTerms: { title: title, categories: selectedCategories },
+        inputTerms: {
+          title: title,
+          categories: selectedCategories,
+          type: props.selectedType,
+        },
       };
       try {
         const putTitle = await axios.put("/putMovie", data);
@@ -79,7 +83,7 @@ function CreateMovie(props) {
     return (
       <div className="movie-container">
         <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
-          Create a new movie
+          Create a new {props.selectedType}
         </Typography>
         <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
           <TextField

@@ -1,11 +1,15 @@
 import "../App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 import { Stack, Chip, Rating, Typography, Box, Button } from "@mui/material";
 import CreateRating from "./CreateRating";
 
 function Movie(props) {
+  useEffect(() => {
+    getData();
+  }, [props.movie]);
+
   const [ratings, setRatings] = useState([]);
   const [categories, setCateogires] = useState([]);
   const [gotData, setGotData] = useState(false);
@@ -19,7 +23,6 @@ function Movie(props) {
     let total = 0;
     for (let i in ratings) {
       total += ratings[i].rating;
-      console.log(total);
     }
     return Math.round((total / ratings.length) * 10) / 10;
   }
@@ -31,7 +34,7 @@ function Movie(props) {
       };
       try {
         const postCateogires = await axios.post("/getMovieCategories", data);
-        const postRatings = await axios.post("getMovieRatings", data);
+        const postRatings = await axios.post("/getMovieRatings", data);
         setCateogires(postCateogires.data);
         setRatings(postRatings.data);
         setGotData(true);
