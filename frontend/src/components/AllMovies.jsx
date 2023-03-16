@@ -5,9 +5,11 @@ import { Stack, Typography, IconButton, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import CreateMovie from "./CreateMovie";
 import BackIcon from "@mui/icons-material/Backspace";
+import Search from "./Search";
 
 function AllMovies(props) {
   const [res, setRes] = useState([]);
+  const [displayedMedia, setDisplayedMedia] = useState([]);
   const [newMovieClicked, setNewMovieClicked] = useState(false);
   const [gotData, setGotData] = useState(false);
 
@@ -23,7 +25,7 @@ function AllMovies(props) {
       try {
         const postType = await axios.post("/getMedia", data);
         setRes(postType.data);
-
+        setDisplayedMedia(postType.data);
         setGotData(true);
       } catch (err) {
         console.log(err);
@@ -93,8 +95,9 @@ function AllMovies(props) {
                 <AddIcon fontSize="inherit" />
               </IconButton>
             </Stack>
+            <Search media={res} setMedia={setDisplayedMedia} />
             <Grid container spacing={0}>
-              {res.map((movie) => {
+              {displayedMedia.map((movie) => {
                 return (
                   <>
                     <Grid item md={15} xs={15} lg={6} xl={4}>

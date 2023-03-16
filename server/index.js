@@ -37,7 +37,7 @@ app.get("/getAllMovies", (req, res) => {
 
 app.get("/getAllCategories", (req, res) => {
   connection.query(
-    "SELECT * FROM `rate-movies`.category;",
+    "SELECT * FROM `rate-movies`.category order by category;",
     function (error, results) {
       res.send(results);
     }
@@ -49,7 +49,7 @@ app.post("/getMedia", (req, res) => {
 
   connection.query(
     "SELECT `media`.`id`, `title`, `description`, `type` FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` join `type` on `type`.`id` = `type-id` where `type` = " +
-      `"${type}"`,
+      `"${type}" order by title`,
     function (error, results) {
       res.send(results);
     }
@@ -61,7 +61,8 @@ app.post("/getMovieCategories", (req, res) => {
 
   connection.query(
     "SELECT `media-category`.`id`, `media-category`.`movie-id`, `category` FROM `media-category` inner join `category` on `media-category`.`category-id` = `category`.`id` where `media-category`.`movie-id` = " +
-      movieId,
+      movieId +
+      " order by category",
     function (error, results) {
       res.send(results);
     }

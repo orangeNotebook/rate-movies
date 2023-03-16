@@ -14,6 +14,7 @@ import CreateRating from "./CreateRating";
 import AddIcon from "@mui/icons-material/AddBox";
 import BackIcon from "@mui/icons-material/Backspace";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { minHeight } from "@mui/system";
 
 function Movie(props) {
   useEffect(() => {
@@ -106,7 +107,11 @@ function Movie(props) {
         </Box>
         <Typography variant="h4">{props.movie.title}</Typography>
 
-        <Typography variant="h6" component="p" sx={{ paddingBottom: "10px" }}>
+        <Typography
+          variant="h6"
+          component="p"
+          sx={{ paddingBottom: "10px", minHeight: "105px" }}
+        >
           {props.movie.description}
         </Typography>
 
@@ -159,44 +164,55 @@ function Movie(props) {
           </>
         ) : (
           <>
-            {ratings.map((rating) => {
-              return (
-                <>
-                  <Stack direction="row" spacing={1}>
-                    <Typography variant="p" component="legend">
-                      {rating.userName}
-                    </Typography>
-                    <IconButton
-                      variant="contained"
-                      color="error"
-                      onClick={() => {
-                        handleDelete(rating);
+            <Stack
+              direction="column"
+              spacing={0}
+              sx={{
+                overflow: "scroll",
+                overflowX: "hidden",
+                overflowY: "auto",
+                maxHeight: { xs: "1000px", sm: "190px", xl: "175px" },
+              }}
+            >
+              {ratings.map((rating) => {
+                return (
+                  <>
+                    <Stack direction="row" spacing={1}>
+                      <Typography variant="p" component="legend">
+                        {rating.userName}
+                      </Typography>
+                      <IconButton
+                        variant="contained"
+                        color="error"
+                        onClick={() => {
+                          handleDelete(rating);
+                        }}
+                      >
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </Stack>
+
+                    <Box
+                      sx={{
+                        width: 200,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  </Stack>
+                      <Rating
+                        precision={0.1}
+                        name="read-only"
+                        max={10}
+                        value={rating.rating}
+                        readOnly
+                      />
 
-                  <Box
-                    sx={{
-                      width: 200,
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Rating
-                      precision={0.1}
-                      name="read-only"
-                      max={10}
-                      value={rating.rating}
-                      readOnly
-                    />
-
-                    <Box sx={{ ml: 2 }}>{rating.rating}</Box>
-                  </Box>
-                </>
-              );
-            })}
+                      <Box sx={{ ml: 2 }}>{rating.rating}</Box>
+                    </Box>
+                  </>
+                );
+              })}
+            </Stack>
           </>
         )}
       </Paper>
