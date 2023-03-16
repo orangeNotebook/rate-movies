@@ -9,9 +9,11 @@ import {
   Box,
   Button,
   IconButton,
+  Grid,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import CreateMovie from "./CreateMovie";
+import BackIcon from "@mui/icons-material/Backspace";
 
 function AllMovies(props) {
   const [res, setRes] = useState([]);
@@ -49,15 +51,31 @@ function AllMovies(props) {
       <div>
         {newMovieClicked ? (
           <>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => {
-                setNewMovieClicked(false);
-              }}
+            <Stack
+              direction="row"
+              spacing={0}
+              justifyContent="center"
+              sx={{ paddingBottom: "15px" }}
             >
-              Cancel
-            </Button>
+              {" "}
+              <Typography
+                component="h2"
+                variant="h4"
+                sx={{ textAlign: "center" }}
+              >
+                Add a {props.selectedType}
+              </Typography>
+              <IconButton
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  setNewMovieClicked(false);
+                }}
+              >
+                <BackIcon fontSize="inherit" />
+              </IconButton>
+            </Stack>
+
             <CreateMovie selectedType={props.selectedType} />
           </>
         ) : (
@@ -84,13 +102,17 @@ function AllMovies(props) {
                 <AddIcon fontSize="inherit" />
               </IconButton>
             </Stack>
-            {res.map((movie) => {
-              return (
-                <>
-                  <Movie movie={movie} selectedType={props.selectedType} />
-                </>
-              );
-            })}
+            <Grid container spacing={0}>
+              {res.map((movie) => {
+                return (
+                  <>
+                    <Grid item md={15} xs={15} lg={6} xl={4}>
+                      <Movie movie={movie} selectedType={props.selectedType} />
+                    </Grid>
+                  </>
+                );
+              })}
+            </Grid>
           </>
         )}
       </div>

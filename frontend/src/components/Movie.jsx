@@ -82,7 +82,11 @@ function Movie(props) {
           {props.movie.description}
         </Typography>
 
-        <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          sx={{ paddingBottom: "10px" }}
+        >
           {categories.map((category) => {
             return <Chip color="primary" label={category.category} />;
           })}
