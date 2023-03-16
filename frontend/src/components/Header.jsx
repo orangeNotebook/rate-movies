@@ -1,14 +1,5 @@
-import { fontSize } from "@mui/system";
 import React from "react";
-import {
-  Stack,
-  Chip,
-  Rating,
-  Typography,
-  Box,
-  Button,
-  Paper,
-} from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 import "../App.css";
 
 function Header() {

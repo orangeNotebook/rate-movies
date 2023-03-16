@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Movie from "./Movie";
-import {
-  Stack,
-  Chip,
-  Rating,
-  Typography,
-  Box,
-  Button,
-  IconButton,
-  Grid,
-} from "@mui/material";
+import { Stack, Typography, IconButton, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import CreateMovie from "./CreateMovie";
 import BackIcon from "@mui/icons-material/Backspace";

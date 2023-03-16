@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Movie from "./Movie";
-import { Stack, Chip, Rating, Typography, Box, Button } from "@mui/material";
-import CreateMovie from "./CreateMovie";
+import React from "react";
+import { Stack, Button } from "@mui/material";
 
 function Home(props) {
   return (
@@ -15,8 +12,7 @@ function Home(props) {
       >
         <Button
           variant="contained"
-          disabled={props.selected === "Movie"}
-          color="success"
+          color={props.selected === "Movie" ? "primary" : "success"}
           onClick={() => {
             props.setSelected("Movie");
           }}
@@ -25,8 +21,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Show"}
-          color="success"
+          color={props.selected === "Show" ? "primary" : "success"}
           onClick={() => {
             props.setSelected("Show");
           }}
@@ -35,8 +30,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Game"}
-          color="success"
+          color={props.selected === "Game" ? "primary" : "success"}
           onClick={() => {
             props.setSelected("Game");
           }}
@@ -45,8 +39,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Album"}
-          color="success"
+          color={props.selected === "Album" ? "primary" : "success"}
           onClick={() => {
             props.setSelected("Album");
           }}

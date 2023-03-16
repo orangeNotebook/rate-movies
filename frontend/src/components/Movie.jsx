@@ -1,6 +1,5 @@
 import "../App.css";
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
 import {
   Stack,
@@ -8,7 +7,6 @@ import {
   Rating,
   Typography,
   Box,
-  Button,
   Paper,
   IconButton,
 } from "@mui/material";
