@@ -59,7 +59,10 @@ function Movie(props) {
 
   if (gotData) {
     return (
-      <Paper className="movie-container">
+      <Paper
+        className="movie-container"
+        sx={{ height: { xs: "fit-content", sm: "500px" } }}
+      >
         <Box
           sx={{
             width: 200,
