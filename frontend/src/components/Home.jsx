@@ -7,10 +7,15 @@ import CreateMovie from "./CreateMovie";
 function Home(props) {
   return (
     <div>
-      <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="center"
+        sx={{ paddingBottom: "15px" }}
+      >
         <Button
           variant="contained"
-          disabled={props.selected === "Movies"}
+          disabled={props.selected === "Movie"}
           color="success"
           onClick={() => {
             props.setSelected("Movie");
@@ -20,7 +25,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Shows"}
+          disabled={props.selected === "Show"}
           color="success"
           onClick={() => {
             props.setSelected("Show");
@@ -30,7 +35,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Games"}
+          disabled={props.selected === "Game"}
           color="success"
           onClick={() => {
             props.setSelected("Game");
@@ -40,7 +45,7 @@ function Home(props) {
         </Button>
         <Button
           variant="contained"
-          disabled={props.selected === "Albums"}
+          disabled={props.selected === "Album"}
           color="success"
           onClick={() => {
             props.setSelected("Album");

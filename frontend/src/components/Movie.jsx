@@ -2,8 +2,19 @@ import "../App.css";
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
-import { Stack, Chip, Rating, Typography, Box, Button } from "@mui/material";
+import {
+  Stack,
+  Chip,
+  Rating,
+  Typography,
+  Box,
+  Button,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import CreateRating from "./CreateRating";
+import AddIcon from "@mui/icons-material/AddBox";
+import BackIcon from "@mui/icons-material/Backspace";
 
 function Movie(props) {
   useEffect(() => {
@@ -48,71 +59,78 @@ function Movie(props) {
 
   if (gotData) {
     return (
-      <div className="movie-container">
-        <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
-          {props.movie.title}
-        </Typography>
+      <Paper className="movie-container">
+        <Box
+          sx={{
+            width: 200,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Rating
+            precision={0.1}
+            name="read-only"
+            max={1}
+            value={calculateTotalRating()}
+            readOnly
+          />
+          <Box sx={{ ml: 2 }}>{calculateTotalRating()}</Box>
+        </Box>
+        <Typography variant="h4">{props.movie.title}</Typography>
+
         <Typography variant="h6" component="p" sx={{ paddingBottom: "10px" }}>
           {props.movie.description}
         </Typography>
-        {addRatingClicked ? (
-          <Button
-            sx={{ marginBottom: "20px" }}
-            variant="contained"
-            color="error"
-            onClick={() => {
-              setAddRatingClicked(false);
-            }}
-          >
-            Cancel
-          </Button>
-        ) : (
-          <Button
-            sx={{ marginBottom: "20px" }}
-            onClick={handleClick}
-            variant="contained"
-            color="success"
-          >
-            Add a rating
-          </Button>
-        )}
 
         <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
           {categories.map((category) => {
             return <Chip color="primary" label={category.category} />;
           })}
         </Stack>
-        {addRatingClicked ? (
-          <CreateRating
-            title={props.movie.title}
-            movieId={props.movie.id}
-            currentUser={props.currentUser}
-          />
-        ) : (
-          <>
-            <Typography component="legend">Average</Typography>
-            <Box
-              sx={{
-                width: 200,
-                display: "flex",
-                alignItems: "center",
-                paddingBottom: "10px",
+        <Stack direction="row" spacing={0} sx={{ paddingBottom: "15px" }}>
+          <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
+            User Ratings
+          </Typography>
+
+          {addRatingClicked ? (
+            <IconButton
+              sx={{ marginBottom: "10px" }}
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setAddRatingClicked(false);
               }}
             >
-              <Rating
-                precision={0.1}
-                name="read-only"
-                max={10}
-                value={calculateTotalRating()}
-                readOnly
-              />
-              <Box sx={{ ml: 2 }}>{calculateTotalRating()}</Box>
-            </Box>
-
+              <BackIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              sx={{ marginBottom: "10px" }}
+              onClick={handleClick}
+              variant="contained"
+              color="success"
+            >
+              <AddIcon fontSize="inherit" />
+            </IconButton>
+          )}
+        </Stack>
+        {addRatingClicked ? (
+          <>
+            {" "}
+            <CreateRating
+              title={props.movie.title}
+              movieId={props.movie.id}
+              currentUser={props.currentUser}
+            />
+          </>
+        ) : (
+          <>
             {ratings.map((rating) => {
               return (
                 <>
-                  <Typography component="legend">{rating.userName}</Typography>
+                  <Typography variant="h6" component="legend">
+                    {rating.userName}
+                  </Typography>
 
                   <Box
                     sx={{
@@ -136,7 +154,7 @@ function Movie(props) {
             })}
           </>
         )}
-      </div>
+      </Paper>
     );
   } else {
     getData();

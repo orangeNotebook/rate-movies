@@ -30,7 +30,7 @@ function CreateRating(props) {
   }
 
   return (
-    <div className="movie-container">
+    <div>
       <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
         Give a rating
       </Typography>

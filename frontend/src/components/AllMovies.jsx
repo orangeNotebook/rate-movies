@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Movie from "./Movie";
-import { Stack, Chip, Rating, Typography, Box, Button } from "@mui/material";
+import {
+  Stack,
+  Chip,
+  Rating,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/AddBox";
 import CreateMovie from "./CreateMovie";
 
 function AllMovies(props) {
@@ -53,19 +62,35 @@ function AllMovies(props) {
           </>
         ) : (
           <>
-            {" "}
-            <Typography variant="h2">All {props.selectedType}s</Typography>
+            <Stack
+              direction="row"
+              spacing={0}
+              justifyContent="center"
+              sx={{ paddingBottom: "15px" }}
+            >
+              {" "}
+              <Typography
+                component="h2"
+                variant="h4"
+                sx={{ textAlign: "center" }}
+              >
+                All {props.selectedType}s
+              </Typography>
+              <IconButton
+                variant="contained"
+                color="success"
+                onClick={handleClick}
+              >
+                <AddIcon fontSize="inherit" />
+              </IconButton>
+            </Stack>
             {res.map((movie) => {
               return (
                 <>
                   <Movie movie={movie} selectedType={props.selectedType} />
-                  <br></br>
                 </>
               );
             })}
-            <Button variant="contained" color="success" onClick={handleClick}>
-              Add new {props.selectedType}
-            </Button>
           </>
         )}
       </div>
