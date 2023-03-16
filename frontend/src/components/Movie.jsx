@@ -13,6 +13,7 @@ import {
 import CreateRating from "./CreateRating";
 import AddIcon from "@mui/icons-material/AddBox";
 import BackIcon from "@mui/icons-material/Backspace";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 function Movie(props) {
   useEffect(() => {
@@ -53,6 +54,32 @@ function Movie(props) {
     }
 
     apifunc();
+  }
+
+  function handleDelete(review) {
+    async function apifunc() {
+      const data = {
+        ratingId: review.id,
+      };
+      try {
+        await axios.post("/deleteRating", data);
+        setGotData(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    if (
+      window.confirm(
+        "Are you sure you want to delete " +
+          review.userName +
+          "s review of " +
+          props.movie.title +
+          "?"
+      )
+    ) {
+      apifunc();
+    }
   }
 
   if (gotData) {
@@ -123,6 +150,8 @@ function Movie(props) {
           <>
             {" "}
             <CreateRating
+              setAddRatingClicked={setAddRatingClicked}
+              setGotData={setGotData}
               title={props.movie.title}
               movieId={props.movie.id}
               currentUser={props.currentUser}
@@ -133,9 +162,20 @@ function Movie(props) {
             {ratings.map((rating) => {
               return (
                 <>
-                  <Typography variant="h6" component="legend">
-                    {rating.userName}
-                  </Typography>
+                  <Stack direction="row" spacing={1}>
+                    <Typography variant="p" component="legend">
+                      {rating.userName}
+                    </Typography>
+                    <IconButton
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        handleDelete(rating);
+                      }}
+                    >
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  </Stack>
 
                   <Box
                     sx={{

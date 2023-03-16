@@ -19,7 +19,8 @@ function CreateRating(props) {
       try {
         const putRating = await axios.put("/putRating", data);
         console.log(putRating);
-        window.location.reload();
+        props.setGotData(false);
+        props.setAddRatingClicked(false);
       } catch (err) {
         console.log(err);
       }

@@ -79,6 +79,16 @@ app.post("/getMovieRatings", (req, res) => {
   );
 });
 
+app.post("/deleteRating", (req, res) => {
+  let { ratingId } = req.body;
+  connection.query(
+    "delete from `media-rating-simple` where id = " + ratingId,
+    function (error, results) {
+      res.send(results);
+    }
+  );
+});
+
 app.put("/putRating", (req, res) => {
   let { userInputs } = req.body;
 
