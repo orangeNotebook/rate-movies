@@ -28,7 +28,8 @@ function Search(props) {
     });
   }
 
-  function searchPressed() {
+  function searchPressed(e) {
+    e.preventDefault();
     let searchedMedia = props.media.filter(function (name) {
       return name.title.toUpperCase().match(searchTerm.toUpperCase());
     });
@@ -43,44 +44,50 @@ function Search(props) {
   if (gotCategories) {
     return (
       <div className="header-container">
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-          sx={{ paddingBottom: "15px" }}
-        >
-          <TextField
-            id="search"
-            color="primary"
-            label="Search"
-            variant="outlined"
-            sx={{ width: "400px" }}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
-          ></TextField>
+        <form>
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+            sx={{ paddingBottom: "15px" }}
+          >
+            <TextField
+              id="search"
+              color="primary"
+              label="Search"
+              variant="outlined"
+              sx={{ width: "400px" }}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+            ></TextField>
 
-          <FormControl sx={{ width: "200px" }}>
-            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedCategory}
-              label="Age"
-              onChange={handleChange}
+            <FormControl sx={{ width: "200px" }}>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedCategory}
+                label="Age"
+                onChange={handleChange}
+              >
+                {categories.map((category) => {
+                  return (
+                    <MenuItem value={category.id}>{category.category}</MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <Button
+              variant="contained"
+              color="success"
+              type="submit"
+              onClick={searchPressed}
             >
-              {categories.map((category) => {
-                return (
-                  <MenuItem value={category.id}>{category.category}</MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <Button variant="contained" color="success" onClick={searchPressed}>
-            Search
-          </Button>
-        </Stack>
-
+              Search
+            </Button>
+          </Stack>
+        </form>
         <Typography
           variant="p"
           sx={{ fontSize: "20px", textAlign: "center", display: "block" }}
