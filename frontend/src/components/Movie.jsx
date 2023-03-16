@@ -61,7 +61,7 @@ function Movie(props) {
     return (
       <Paper
         className="movie-container"
-        sx={{ height: { xs: "fit-content", sm: "500px" } }}
+        sx={{ height: { xs: "fit-content", sm: "520px" } }}
       >
         <Box
           sx={{
