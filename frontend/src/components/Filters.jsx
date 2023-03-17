@@ -39,7 +39,12 @@ function Filters(props) {
 
   return (
     <div className="header-container">
-      <Stack direction="row" spacing={2} justifyContent="center">
+      <Stack
+        sx={{ padding: "10px" }}
+        direction="row"
+        spacing={2}
+        justifyContent="center"
+      >
         <Button onClick={getHighestRated}>
           <Stack direction={"row"} spacing={1}>
             <StarIcon></StarIcon>

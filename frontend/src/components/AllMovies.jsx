@@ -96,7 +96,7 @@ function AllMovies(props) {
                 <AddIcon fontSize="inherit" />
               </IconButton>
             </Stack>
-            <Paper sx={{ padding: "10px", margin: "10px" }}>
+            <Paper sx={{ paddingTop: "10px", margin: "10px" }}>
               <Search media={res} setMedia={setDisplayedMedia} />
               <Filters
                 media={res}
