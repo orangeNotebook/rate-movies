@@ -51,7 +51,7 @@ app.post("/getMedia", (req, res) => {
     "SELECT `media`.`id`, `title`, `description`, `type`, avg(`rating`) as AR " +
     "FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` " +
     "join `type` on `type`.`id` = `type-id` " +
-    "join `media-rating-simple` on `media-rating-simple`.`movie-id` = `media`.`id` " +
+    "left join `media-rating-simple` on `media-rating-simple`.`movie-id` = `media`.`id` " +
     "where `type` = " +
     `"${type}" ` +
     "group by `title` order by AR desc";
