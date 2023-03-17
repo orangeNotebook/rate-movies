@@ -6,6 +6,7 @@ import { Stack, Typography, TextField, Button } from "@mui/material";
 function CreateRating(props) {
   const [rating, setRating] = useState(0);
   const [userName, setUserName] = useState("");
+  const [description, setDescription] = useState("");
 
   function putReview() {
     async function apifunc() {
@@ -64,6 +65,22 @@ function CreateRating(props) {
           Submit
         </Button>
       </Stack>
+      {/* <TextField
+        onChange={(event) => {
+          setDescription(event.target.value);
+        }}
+        value={description}
+        multiline
+        minRows={1}
+        sx={{ width: "530px" }}
+        id="description"
+        color="primary"
+        label="Comment"
+        variant="outlined"
+      />
+      <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
+        {description.length} / 255
+      </Typography> */}
     </div>
   );
 }

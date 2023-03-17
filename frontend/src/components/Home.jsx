@@ -8,7 +8,7 @@ function Home(props) {
         direction="row"
         spacing={2}
         justifyContent="center"
-        sx={{ paddingBottom: "15px" }}
+        sx={{ paddingBottom: "15px", margin: "10px" }}
       >
         <Button
           variant="contained"

@@ -46,23 +46,23 @@ function Search(props) {
       <div className="header-container">
         <form>
           <Stack
-            direction="row"
+            direction={{ sm: "row", xs: "column" }}
             spacing={2}
             justifyContent="center"
-            sx={{ paddingBottom: "15px" }}
+            sx={{ paddingTop: "10px" }}
           >
             <TextField
               id="search"
               color="primary"
               label="Search"
               variant="outlined"
-              sx={{ width: "400px" }}
+              sx={{ width: { sm: "400px", xs: "auto" } }}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
               }}
             ></TextField>
 
-            <FormControl sx={{ width: "200px" }}>
+            <FormControl sx={{ width: { sm: "200px", xs: "auto" } }}>
               <InputLabel id="demo-simple-select-label">Category</InputLabel>
               <Select
                 labelId="demo-simple-select-label"

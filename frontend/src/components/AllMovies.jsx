@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Movie from "./Movie";
-import { Stack, Typography, IconButton, Grid } from "@mui/material";
+import { Stack, Typography, IconButton, Grid, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import CreateMovie from "./CreateMovie";
 import BackIcon from "@mui/icons-material/Backspace";
 import Search from "./Search";
+import Filters from "./Filters";
 
 function AllMovies(props) {
   const [res, setRes] = useState([]);
   const [displayedMedia, setDisplayedMedia] = useState([]);
   const [newMovieClicked, setNewMovieClicked] = useState(false);
   const [gotData, setGotData] = useState(false);
-
+  const [quickRefresh, setQuickRefresh] = useState(false);
   useEffect(() => {
     getData();
   }, [props.selectedType]);
@@ -95,18 +96,34 @@ function AllMovies(props) {
                 <AddIcon fontSize="inherit" />
               </IconButton>
             </Stack>
-            <Search media={res} setMedia={setDisplayedMedia} />
-            <Grid container spacing={0}>
-              {displayedMedia.map((movie) => {
-                return (
-                  <>
-                    <Grid item md={15} xs={15} lg={6} xl={4}>
-                      <Movie movie={movie} selectedType={props.selectedType} />
-                    </Grid>
-                  </>
-                );
-              })}
-            </Grid>
+            <Paper sx={{ padding: "10px", margin: "10px" }}>
+              <Search media={res} setMedia={setDisplayedMedia} />
+              <Filters
+                media={res}
+                setDisplayedMedia={setDisplayedMedia}
+                setMedia={setRes}
+                setQuickRefresh={setQuickRefresh}
+                selectedType={props.selectedType}
+              />
+            </Paper>
+            {quickRefresh ? (
+              setQuickRefresh(false)
+            ) : (
+              <Grid container spacing={0}>
+                {displayedMedia.map((movie) => {
+                  return (
+                    <>
+                      <Grid item md={15} xs={15} lg={6} xl={4}>
+                        <Movie
+                          movie={movie}
+                          selectedType={props.selectedType}
+                        />
+                      </Grid>
+                    </>
+                  );
+                })}
+              </Grid>
+            )}
           </>
         )}
       </div>
