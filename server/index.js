@@ -61,6 +61,25 @@ app.post("/getMedia", (req, res) => {
   });
 });
 
+app.post("/getUsersMedia", (req, res) => {
+  let { type, userName } = req.body;
+
+  let query =
+    "SELECT `media`.`id`, `title`, `description`, `type`, `rating`, `userName` " +
+    "FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` " +
+    "join `type` on `type`.`id` = `type-id` " +
+    "left join `media-rating-simple` on `media-rating-simple`.`movie-id` = `media`.`id` " +
+    "where `type` = " +
+    `"${type}" ` +
+    "and `userName` = " +
+    `"${userName}" ` +
+    "group by `title` order by rating desc";
+
+  connection.query(query, function (error, results) {
+    res.send(results);
+  });
+});
+
 app.post("/getMovieCategories", (req, res) => {
   let { movieId } = req.body;
 
