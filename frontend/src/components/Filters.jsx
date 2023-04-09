@@ -19,7 +19,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 function Filters(props) {
   function getHighestRated() {
     let sortedArr = props.media.sort(function (a, b) {
-      return b.AR - a.AR;
+      return a.rating ? b.rating - a.rating : b.AR - a.AR;
     });
 
     props.setDisplayedMedia(sortedArr);
@@ -29,7 +29,7 @@ function Filters(props) {
 
   function getLowestRated() {
     let sortedArr = props.media.sort(function (a, b) {
-      return a.AR - b.AR;
+      return a.rating ? a.rating - b.rating : a.AR - b.AR;
     });
 
     props.setDisplayedMedia(sortedArr);

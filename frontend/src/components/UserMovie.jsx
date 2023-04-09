@@ -9,15 +9,18 @@ import {
   Box,
   Paper,
   IconButton,
+  Icon,
+  Tooltip,
   Button,
 } from "@mui/material";
 import CreateRating from "./CreateRating";
 import AddIcon from "@mui/icons-material/AddBox";
 import BackIcon from "@mui/icons-material/Backspace";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import PersonIcon from "@mui/icons-material/Person";
 import { minHeight } from "@mui/system";
 
-function Movie(props) {
+function UserMovie(props) {
   useEffect(() => {
     getData();
   }, [props.movie]);
@@ -90,22 +93,51 @@ function Movie(props) {
         className="movie-container"
         sx={{ height: { xs: "fit-content", sm: "520px" } }}
       >
-        <Box
-          sx={{
-            width: 200,
-            display: "flex",
-            alignItems: "center",
-          }}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={3}
+          sx={{ paddingBottom: "10px" }}
         >
-          <Rating
-            precision={0.1}
-            name="read-only"
-            max={1}
-            value={calculateTotalRating()}
-            readOnly
-          />
-          <Box sx={{ ml: 2 }}>{calculateTotalRating()}</Box>
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip
+              title={
+                props.movie.userName[props.movie.userName.length - 1] === "s"
+                  ? props.movie.userName + "' score"
+                  : props.movie.userName + "'s score"
+              }
+            >
+              <Icon>
+                <PersonIcon />
+              </Icon>
+            </Tooltip>
+
+            <Box sx={{ ml: 2 }}>{props.movie.rating}</Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Global score">
+              <Icon>
+                <Rating
+                  precision={0.1}
+                  name="read-only"
+                  max={1}
+                  value={calculateTotalRating()}
+                  readOnly
+                />
+              </Icon>
+            </Tooltip>
+            <Box sx={{ ml: 2 }}>{calculateTotalRating()}</Box>
+          </Box>
+        </Stack>
         <Typography variant="h4">{props.movie.title}</Typography>
 
         <Typography
@@ -191,11 +223,11 @@ function Movie(props) {
                         variant="text"
                         onClick={(e) => {
                           props.setSelectedUser(rating.userName);
+                          props.setGotData(false);
                         }}
                       >
                         {rating.userName}
                       </Button>
-
                       <IconButton
                         variant="contained"
                         color="error"
@@ -237,4 +269,4 @@ function Movie(props) {
   }
 }
 
-export default Movie;
+export default UserMovie;

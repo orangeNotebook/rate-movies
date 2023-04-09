@@ -5,15 +5,29 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AllMovies from "./components/AllMovies";
 import Home from "./components/Home";
+import UserProfile from "./components/UserProfile";
 
 function App() {
-  const [selected, setSelected] = useState("Movie");
+  const [selectedType, setSelectedType] = useState("Movie");
+  const [selectedUser, setSelectedUser] = useState("");
   return (
     <div className="App">
       <Header />
 
-      <Home selected={selected} setSelected={setSelected} />
-      <AllMovies selectedType={selected} />
+      <Home selected={selectedType} setSelected={setSelectedType} />
+      {selectedUser ? (
+        <UserProfile
+          selectedType={selectedType}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        ></UserProfile>
+      ) : (
+        <AllMovies
+          selectedType={selectedType}
+          setSelectedUser={setSelectedUser}
+        />
+      )}
+
       <Footer />
     </div>
   );

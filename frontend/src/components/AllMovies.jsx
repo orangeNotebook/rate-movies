@@ -117,6 +117,7 @@ function AllMovies(props) {
                         <Movie
                           movie={movie}
                           selectedType={props.selectedType}
+                          setSelectedUser={props.setSelectedUser}
                         />
                       </Grid>
                     </>

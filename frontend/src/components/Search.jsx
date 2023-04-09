@@ -22,7 +22,6 @@ function Search(props) {
 
   function getAllCategories() {
     axios.get("/getAllCategories").then((response) => {
-      console.log(response.data);
       setCategories(response.data);
       setGotCategories(true);
     });
@@ -49,7 +48,7 @@ function Search(props) {
             direction={{ sm: "row", xs: "column" }}
             spacing={2}
             justifyContent="center"
-            sx={{ paddingTop: "10px" }}
+            sx={{ paddingTop: "10px", margin: "10px" }}
           >
             <TextField
               id="search"
