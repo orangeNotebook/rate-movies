@@ -81,6 +81,14 @@ function UserProfile(props) {
           selectedUser={props.selectedUser}
           selectedType={props.selectedType}
         />
+        <Typography
+          sx={{
+            paddingLeft: "10px",
+            paddingBottom: "10px",
+          }}
+        >
+          Showing {displayedMedia.length} {props.selectedType}s
+        </Typography>
 
         {quickRefresh ? (
           setQuickRefresh(false)

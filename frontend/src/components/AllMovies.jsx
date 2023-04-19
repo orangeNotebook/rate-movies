@@ -119,6 +119,14 @@ function AllMovies(props) {
                     selectedType={props.selectedType}
                   />
                 </Paper>
+                <Typography
+                  sx={{
+                    paddingLeft: "10px",
+                    paddingBottom: "10px",
+                  }}
+                >
+                  Showing {displayedMedia.length} {props.selectedType}s
+                </Typography>
                 {quickRefresh ? (
                   setQuickRefresh(false)
                 ) : (
