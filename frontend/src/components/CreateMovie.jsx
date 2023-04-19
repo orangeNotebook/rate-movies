@@ -24,6 +24,7 @@ function CreateMovie(props) {
   const theme = useTheme();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [gotCategories, setGotCategories] = useState(false);
@@ -52,6 +53,7 @@ function CreateMovie(props) {
         inputTerms: {
           title: title,
           description: description,
+          image: image,
           categories: selectedCategories,
           type: props.selectedType,
         },
@@ -136,9 +138,20 @@ function CreateMovie(props) {
               variant="outlined"
             />
             <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
-              {description.length} / 180
+              {description.length} / 280
             </Typography>
           </Stack>
+          <TextField
+            sx={{ width: "530px", marginBottom: "10px" }}
+            onChange={(event) => {
+              setImage(event.target.value);
+            }}
+            value={image}
+            id="image"
+            color="primary"
+            label="Image URL"
+            variant="outlined"
+          />
           <Stack
             direction="row"
             spacing={2}
@@ -151,7 +164,7 @@ function CreateMovie(props) {
               disabled={
                 description === "" ||
                 title === "" ||
-                description.length > 180 ||
+                description.length > 280 ||
                 !selectedCategories[0]
               }
               onClick={putMovie}

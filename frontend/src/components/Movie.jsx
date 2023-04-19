@@ -2,20 +2,14 @@ import "../App.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Stack,
-  Chip,
   Rating,
   Typography,
   Box,
-  Paper,
-  IconButton,
-  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActionArea,
 } from "@mui/material";
-import CreateRating from "./CreateRating";
-import AddIcon from "@mui/icons-material/AddBox";
-import BackIcon from "@mui/icons-material/Backspace";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { minHeight } from "@mui/system";
 
 function Movie(props) {
   useEffect(() => {
@@ -86,151 +80,49 @@ function Movie(props) {
 
   if (gotData) {
     return (
-      <Paper
-        className="movie-container"
-        sx={{ height: { xs: "fit-content", sm: "520px" } }}
+      //md={3} xs={6} lg={3} xl={2}
+      <Card
+        sx={{
+          margin: "10px",
+          width: { md: "23vw", xs: "45vw", lg: "23vw", xl: "15vw" },
+        }}
       >
-        <Box
-          sx={{
-            width: 200,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Rating
-            precision={0.1}
-            name="read-only"
-            max={1}
-            value={calculateTotalRating()}
-            readOnly
+        <CardActionArea>
+          <CardMedia
+            onClick={() => {
+              props.setSelectedMovie(props.movie);
+            }}
+            component="img"
+            width="250"
+            sx={{ aspectRatio: "3/4.6" }}
+            image={
+              props.movie.image ||
+              "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F5%2F50%2FBlack_colour.jpg&f=1&nofb=1&ipt=6c0c71f7e088e4661c44556c789a4acbf713d04dca34c28100bf2f4669b2317f&ipo=images"
+            }
+            alt={props.movie.title + " image"}
           />
-          <Box sx={{ ml: 2 }}>{calculateTotalRating()}</Box>
-        </Box>
-        <Typography variant="h4">{props.movie.title}</Typography>
-
-        <Typography
-          variant="h6"
-          component="p"
-          sx={{ paddingBottom: "10px", minHeight: "105px" }}
-        >
-          {props.movie.description}
-        </Typography>
-
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={1}
-          sx={{ paddingBottom: "10px" }}
-        >
-          {categories.map((category) => {
-            return <Chip color="primary" label={category.category} />;
-          })}
-        </Stack>
-        <Stack direction="row" spacing={0} sx={{ paddingBottom: "15px" }}>
-          <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
-            User Ratings
-          </Typography>
-
-          {addRatingClicked ? (
-            <IconButton
-              sx={{ marginBottom: "10px" }}
-              variant="contained"
-              color="error"
-              onClick={() => {
-                setAddRatingClicked(false);
-              }}
-            >
-              <BackIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              sx={{ marginBottom: "10px" }}
-              onClick={handleClick}
-              variant="contained"
-              color="success"
-            >
-              <AddIcon fontSize="inherit" />
-            </IconButton>
-          )}
-        </Stack>
-        {addRatingClicked ? (
-          <>
-            {" "}
-            <CreateRating
-              setAddRatingClicked={setAddRatingClicked}
-              setGotData={setGotData}
-              title={props.movie.title}
-              movieId={props.movie.id}
-              currentUser={props.currentUser}
+        </CardActionArea>
+        <CardContent sx={{ padding: "5px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Rating
+              precision={0.1}
+              name="read-only"
+              max={1}
+              value={calculateTotalRating()}
+              readOnly
             />
-          </>
-        ) : (
-          <>
-            <Stack
-              direction="column"
-              spacing={0}
-              sx={{
-                overflow: "scroll",
-                overflowX: "hidden",
-                overflowY: "auto",
-                maxHeight: { xs: "1000px", sm: "190px", xl: "175px" },
-              }}
-            >
-              {ratings.map((rating) => {
-                return (
-                  <>
-                    <Stack direction="row" spacing={1}>
-                      <Button
-                        sx={{
-                          paddingBottom: "0px",
-                          paddingTop: "0px",
-                          paddingLeft: "2px",
-                          paddingRight: "2px",
-                          textTransform: "none",
-                          fontSize: "1.4rem",
-                        }}
-                        variant="text"
-                        onClick={(e) => {
-                          props.setSelectedUser(rating.userName);
-                        }}
-                      >
-                        {rating.userName}
-                      </Button>
-
-                      <IconButton
-                        variant="contained"
-                        color="error"
-                        onClick={() => {
-                          handleDelete(rating);
-                        }}
-                      >
-                        <DeleteForeverIcon />
-                      </IconButton>
-                    </Stack>
-
-                    <Box
-                      sx={{
-                        width: 200,
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Rating
-                        precision={0.1}
-                        name="read-only"
-                        max={10}
-                        value={rating.rating}
-                        readOnly
-                      />
-
-                      <Box sx={{ ml: 2 }}>{rating.rating}</Box>
-                    </Box>
-                  </>
-                );
-              })}
-            </Stack>
-          </>
-        )}
-      </Paper>
+            <Box sx={{ ml: 0.5 }}>{calculateTotalRating()}</Box>
+          </Box>
+          <Typography variant="h5" component="div">
+            {props.movie.title}
+          </Typography>
+        </CardContent>
+      </Card>
     );
   } else {
     getData();

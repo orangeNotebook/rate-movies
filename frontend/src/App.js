@@ -10,6 +10,7 @@ import UserProfile from "./components/UserProfile";
 function App() {
   const [selectedType, setSelectedType] = useState("Movie");
   const [selectedUser, setSelectedUser] = useState("");
+  const [selectedMovie, setSelectedMovie] = useState("");
   return (
     <div className="App">
       <Header />
@@ -20,11 +21,15 @@ function App() {
           selectedType={selectedType}
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
+          setSelectedMovie={setSelectedMovie}
+          selectedMovie={selectedMovie}
         ></UserProfile>
       ) : (
         <AllMovies
           selectedType={selectedType}
           setSelectedUser={setSelectedUser}
+          setSelectedMovie={setSelectedMovie}
+          selectedMovie={selectedMovie}
         />
       )}
 

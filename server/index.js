@@ -48,7 +48,7 @@ app.post("/getMedia", (req, res) => {
   let { type } = req.body;
 
   let query =
-    "SELECT `media`.`id`, `title`, `description`, `type`, avg(`rating`) as AR " +
+    "SELECT `media`.`id`, `title`, `description`, `image`, `type`, avg(`rating`) as AR " +
     "FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` " +
     "join `type` on `type`.`id` = `type-id` " +
     "left join `media-rating-simple` on `media-rating-simple`.`movie-id` = `media`.`id` " +
@@ -65,7 +65,7 @@ app.post("/getUsersMedia", (req, res) => {
   let { type, userName } = req.body;
 
   let query =
-    "SELECT `media`.`id`, `title`, `description`, `type`, `rating`, `userName` " +
+    "SELECT `media`.`id`, `title`, `description`, `image`, `type`, `rating`, `userName` " +
     "FROM `media` join `media-type` on `media-type`.`movie-id` = `media`.`id` " +
     "join `type` on `type`.`id` = `type-id` " +
     "left join `media-rating-simple` on `media-rating-simple`.`movie-id` = `media`.`id` " +
@@ -135,9 +135,13 @@ app.put("/putMovie", (req, res) => {
   let { inputTerms } = req.body;
 
   function generateQueryMedia() {
-    let values = [[`${inputTerms.title}`], [`${inputTerms.description}`]];
+    let values = [
+      [`${inputTerms.title}`],
+      [`${inputTerms.description}`],
+      [`${inputTerms.image}`],
+    ];
     let insertStatement =
-      "INSERT INTO `media` (`title`, `description`) VALUES (?, ?); ";
+      "INSERT INTO `media` (`title`, `description`, `image`) VALUES (?, ?, ?); ";
 
     return { insertStatement: insertStatement, values: values };
   }

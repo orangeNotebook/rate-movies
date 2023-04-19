@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Movie from "./Movie";
 import { Stack, Typography, IconButton, Grid, Paper } from "@mui/material";
-import AddIcon from "@mui/icons-material/AddBox";
-import CreateMovie from "./CreateMovie";
 import BackIcon from "@mui/icons-material/Backspace";
 import Search from "./Search";
 import Filters from "./Filters";
@@ -13,7 +10,6 @@ import UserRatingDistribution from "./UserRatingDistribution";
 function UserProfile(props) {
   const [res, setRes] = useState([]);
   const [displayedMedia, setDisplayedMedia] = useState([]);
-  const [newMovieClicked, setNewMovieClicked] = useState(false);
   const [gotData, setGotData] = useState(false);
   const [quickRefresh, setQuickRefresh] = useState(false);
   useEffect(() => {
@@ -37,10 +33,6 @@ function UserProfile(props) {
     }
 
     apifunc();
-  }
-
-  function handleClick() {
-    setNewMovieClicked(true);
   }
 
   if (gotData) {
@@ -97,12 +89,13 @@ function UserProfile(props) {
             {displayedMedia.map((movie) => {
               return (
                 <>
-                  <Grid item md={15} xs={15} lg={6} xl={4}>
+                  <Grid item md={3} xs={6} lg={3} xl={2}>
                     <UserMovie
                       movie={movie}
                       selectedType={props.selectedType}
                       setSelectedUser={props.setSelectedUser}
                       setGotData={setGotData}
+                      setSelectedMovie={props.setSelectedMovie}
                     />
                   </Grid>
                 </>
