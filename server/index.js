@@ -96,7 +96,7 @@ app.post("/getMovieCategories", (req, res) => {
 app.post("/getMovieRatings", (req, res) => {
   let { movieId } = req.body;
   connection.query(
-    "SELECT `media-rating-simple`.`id`, `movie-id`, `title`, `userName`, `rating` FROM `media-rating-simple` inner join `media` on `media`.`id` = `media-rating-simple`.`movie-id` where `movie-id` =" +
+    "SELECT `media-rating-simple`.`id`, `movie-id`, `title`, `userName`, `rating`, `comment` FROM `media-rating-simple` inner join `media` on `media`.`id` = `media-rating-simple`.`movie-id` where `movie-id` =" +
       movieId,
     function (error, results) {
       res.send(results);
@@ -118,12 +118,13 @@ app.put("/putRating", (req, res) => {
   let { userInputs } = req.body;
 
   const insertStatement =
-    "INSERT INTO `rate-movies`.`media-rating-simple` (`movie-id`,`userName`,`rating`) VALUES (?,?,?);";
+    "INSERT INTO `rate-movies`.`media-rating-simple` (`movie-id`,`userName`,`rating`, `comment`) VALUES (?,?,?,?);";
 
   const values = [
     [userInputs.movieId],
     [userInputs.userName],
     [userInputs.rating],
+    [userInputs.comment],
   ];
   connection.query(insertStatement, values, function (error, results) {
     if (error) throw error;

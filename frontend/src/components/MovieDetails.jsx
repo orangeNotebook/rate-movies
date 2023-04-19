@@ -206,7 +206,6 @@ function MovieDetails(props) {
             </Stack>
             {addRatingClicked ? (
               <>
-                {" "}
                 <CreateRating
                   setAddRatingClicked={setAddRatingClicked}
                   setGotData={setGotData}
@@ -216,63 +215,67 @@ function MovieDetails(props) {
                 />
               </>
             ) : (
-              <>
-                <Stack direction="column" spacing={0}>
-                  {ratings.map((rating) => {
-                    return (
-                      <>
-                        <Stack direction="row" spacing={1}>
-                          <Button
-                            sx={{
-                              paddingBottom: "0px",
-                              paddingTop: "0px",
-                              paddingLeft: "2px",
-                              paddingRight: "2px",
-                              textTransform: "none",
-                              fontSize: "1.4rem",
-                            }}
-                            variant="text"
-                            onClick={(e) => {
-                              props.setSelectedUser(rating.userName);
-                            }}
-                          >
-                            {rating.userName}
-                          </Button>
-
-                          <IconButton
-                            variant="contained"
-                            color="error"
-                            onClick={() => {
-                              handleDelete(rating);
-                            }}
-                          >
-                            <DeleteForeverIcon />
-                          </IconButton>
-                        </Stack>
-
-                        <Box
+              <></>
+            )}
+            <>
+              <Stack direction="column" spacing={0}>
+                {ratings.map((rating) => {
+                  return (
+                    <>
+                      <Stack direction="row" spacing={1}>
+                        <Button
                           sx={{
-                            width: 200,
-                            display: "flex",
-                            alignItems: "center",
+                            paddingBottom: "0px",
+                            paddingTop: "0px",
+                            paddingLeft: "2px",
+                            paddingRight: "2px",
+                            textTransform: "none",
+                            fontSize: "1.4rem",
+                          }}
+                          variant="text"
+                          onClick={(e) => {
+                            props.setSelectedUser(rating.userName);
                           }}
                         >
-                          <Rating
-                            precision={0.1}
-                            name="read-only"
-                            max={10}
-                            value={rating.rating}
-                            readOnly
-                          />
+                          {rating.userName}
+                        </Button>
 
-                          <Box sx={{ ml: 2 }}>{rating.rating}</Box>
-                        </Box>
-                      </>
-                    );
-                  })}
-                </Stack>
-              </>
-            )}
+                        <IconButton
+                          variant="contained"
+                          color="error"
+                          onClick={() => {
+                            handleDelete(rating);
+                          }}
+                        >
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </Stack>
+
+                      <Box
+                        sx={{
+                          width: 200,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Rating
+                          precision={0.1}
+                          name="read-only"
+                          max={10}
+                          value={rating.rating}
+                          readOnly
+                        />
+
+                        <Box sx={{ ml: 2 }}>{rating.rating}</Box>
+                      </Box>
+                      <Typography variant="h5" sx={{ paddingBottom: "10px" }}>
+                        {rating.comment}
+                      </Typography>
+                    </>
+                  );
+                })}
+              </Stack>
+            </>
           </Paper>
         </Grid>
         <Grid item lg={0} xl={2}></Grid>

@@ -15,6 +15,7 @@ function CreateRating(props) {
           movieId: props.movieId,
           userName: userName,
           rating: rating,
+          comment: description,
         },
       };
       try {
@@ -35,7 +36,12 @@ function CreateRating(props) {
       <Typography variant="h4" sx={{ paddingBottom: "10px" }}>
         Give a rating
       </Typography>
-      <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
+
+      <Stack
+        direction={{ md: "column", lg: "row" }}
+        spacing={1}
+        sx={{ paddingBottom: "10px" }}
+      >
         <TextField
           onChange={(event) => {
             setUserName(event.target.value);
@@ -46,17 +52,39 @@ function CreateRating(props) {
           label="Your Name"
           variant="outlined"
         />
+
         <TextField
           onChange={(event) => {
             setRating(event.target.value);
           }}
           value={rating}
+          sx={{ width: { lg: "120px", md: "100%" } }}
           id="rating"
           color="primary"
           label="Rating (1-10)"
           variant="outlined"
         />
+
+        <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
+          <TextField
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+            value={description}
+            multiline
+            minRows={1}
+            sx={{ width: { lg: "530px", md: "100%" } }}
+            id="description"
+            color="primary"
+            label="Description"
+            variant="outlined"
+          />
+          <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
+            {description.length} / 280
+          </Typography>
+        </Stack>
         <Button
+          sx={{ height: "50px" }}
           variant="contained"
           color="success"
           disabled={rating === "" || userName === "" || Number(rating) >= 10.1}
@@ -65,22 +93,6 @@ function CreateRating(props) {
           Submit
         </Button>
       </Stack>
-      {/* <TextField
-        onChange={(event) => {
-          setDescription(event.target.value);
-        }}
-        value={description}
-        multiline
-        minRows={1}
-        sx={{ width: "530px" }}
-        id="description"
-        color="primary"
-        label="Comment"
-        variant="outlined"
-      />
-      <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
-        {description.length} / 255
-      </Typography> */}
     </div>
   );
 }
