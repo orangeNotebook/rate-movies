@@ -1,61 +1,34 @@
 import "../App.css";
+import CreateMovieOld from "./CreateMovieOld";
 import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
 import axios from "axios";
-import { Stack, Typography, TextField, Button, Paper } from "@mui/material";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
-
-function getStyles(category, selectedCategories, theme) {
-  return {
-    fontWeight:
-      selectedCategories.indexOf(category) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+import {
+  Stack,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  CardMedia,
+  CardContent,
+  Card,
+  CardActionArea,
+} from "@mui/material";
 
 function CreateMovie(props) {
-  const theme = useTheme();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [gotCategories, setGotCategories] = useState(false);
+  const [apiTitles, setApiTitles] = useState([]);
+  const [enableLegacy, setEnableLegacy] = useState(false);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedCategories(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  function getAllCategories() {
-    axios.get("/getAllCategories").then((response) => {
-      console.log(response.data);
-      setCategories(response.data);
-      setGotCategories(true);
-    });
-  }
-
-  function putMovie() {
+  function putMovie(selectedMovie) {
     async function apifunc() {
       const data = {
         inputTerms: {
-          title: title,
-          description: description,
-          image: image,
-          categories: selectedCategories,
+          title: selectedMovie.title,
+          image: selectedMovie.image,
+          description: selectedMovie.plot,
+          categories: selectedMovie.genreList,
           type: props.selectedType,
+          imdbId: selectedMovie.id,
         },
       };
       try {
@@ -70,7 +43,58 @@ function CreateMovie(props) {
     apifunc();
   }
 
-  if (gotCategories) {
+  function getTitles(userInput) {
+    axios
+      .get(
+        `https://imdb-api.com/en/API/${
+          props.selectedType === "Movie" ? "SearchMovie" : "SearchSeries"
+        }/pk_n23jchy4iuj8g6vap/${userInput}`
+      )
+      .then((response) => {
+        console.log(response.data.results);
+        setApiTitles(response.data.results);
+      });
+  }
+
+  function getTitle(id) {
+    axios
+      .get(`https://imdb-api.com/en/API/Title/pk_n23jchy4iuj8g6vap/${id}`)
+      .then((response) => {
+        putMovie(response.data);
+      });
+  }
+
+  function handleSelectMovie(selectedMovie) {
+    if (
+      window.confirm(
+        "Are you sure you want to add " + selectedMovie.title + "?"
+      )
+    ) {
+      getTitle(selectedMovie.id);
+    }
+  }
+
+  if (
+    enableLegacy ||
+    (props.selectedType !== "Movie" && props.selectedType !== "Show")
+  ) {
+    return (
+      <>
+        <CreateMovieOld selectedType={props.selectedType}></CreateMovieOld>
+        <Typography variant="h6" component="div" sx={{ textAlign: "center" }}>
+          Go to the
+          <Button
+            onClick={() => {
+              setEnableLegacy(false);
+            }}
+            sx={{ marginBottom: "3px", marginLeft: "3px" }}
+          >
+            updated form
+          </Button>
+        </Typography>
+      </>
+    );
+  } else {
     return (
       <div className="create-movie-container">
         <Paper sx={{ padding: "10px" }}>
@@ -80,6 +104,7 @@ function CreateMovie(props) {
             sx={{ paddingBottom: "10px", textAlign: "center" }}
           >
             <TextField
+              sx={{ width: { md: "25vw", xs: "auto" } }}
               onChange={(event) => {
                 setTitle(event.target.value);
               }}
@@ -89,94 +114,76 @@ function CreateMovie(props) {
               label="Title"
               variant="outlined"
             />
-            <FormControl sx={{ m: 1, width: { xs: "100vw - 10px", sm: 300 } }}>
-              <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
-              <Select
-                labelId="demo-multiple-chip-label"
-                id="demo-multiple-chip"
-                multiple
-                value={selectedCategories}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={categories}
-              >
-                {categories.map((category) => (
-                  <MenuItem
-                    key={category.category}
-                    value={category.category}
-                    style={getStyles(
-                      category.category,
-                      selectedCategories,
-                      theme
-                    )}
-                  >
-                    {category.category}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
-          <Stack direction="row" spacing={1} sx={{ paddingBottom: "10px" }}>
-            <TextField
-              onChange={(event) => {
-                setDescription(event.target.value);
-              }}
-              value={description}
-              multiline
-              minRows={4}
-              sx={{ width: "530px" }}
-              id="description"
-              color="primary"
-              label="Description"
-              variant="outlined"
-            />
-            <Typography variant="h5" component="p" sx={{ fontSize: "15px" }}>
-              {description.length} / 280
-            </Typography>
-          </Stack>
-          <TextField
-            sx={{ width: "530px", marginBottom: "10px" }}
-            onChange={(event) => {
-              setImage(event.target.value);
-            }}
-            value={image}
-            id="image"
-            color="primary"
-            label="Image URL"
-            variant="outlined"
-          />
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-            sx={{ paddingBottom: "15px" }}
-          >
             <Button
               variant="contained"
               color="success"
-              disabled={
-                description === "" ||
-                title === "" ||
-                description.length > 280 ||
-                !selectedCategories[0]
-              }
-              onClick={putMovie}
+              disabled={title === ""}
+              onClick={() => {
+                getTitles(title);
+              }}
             >
-              Submit
+              Find {props.selectedType}
             </Button>
           </Stack>
+          {apiTitles ? (
+            <>
+              {apiTitles.map((apiTitle) => {
+                return (
+                  <Card
+                    sx={{
+                      margin: "10px",
+                      width: { md: "30vw", xs: "85vw" },
+                    }}
+                    variant="outlined"
+                  >
+                    <CardActionArea
+                      onClick={() => {
+                        handleSelectMovie(apiTitle);
+                      }}
+                    >
+                      <Stack direction={"row"} spacing={1}>
+                        <CardMedia
+                          component="img"
+                          sx={{ width: "100px" }}
+                          image={apiTitle.image}
+                          alt={apiTitle.title + " image"}
+                        />
+
+                        <CardContent sx={{ padding: "5px" }}>
+                          <Typography variant="h5" component="div">
+                            {apiTitle.title}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ color: "#a6a6a6" }}
+                          >
+                            {apiTitle.description}
+                          </Typography>
+                        </CardContent>
+                      </Stack>
+                    </CardActionArea>
+                  </Card>
+                );
+              })}{" "}
+            </>
+          ) : (
+            <></>
+          )}
         </Paper>
+        <Typography variant="h6" component="div" sx={{ textAlign: "center" }}>
+          If the above does not work, try the
+          <Button
+            onClick={() => {
+              setEnableLegacy(true);
+            }}
+            sx={{ marginBottom: "3px", marginLeft: "3px" }}
+          >
+            legacy form
+          </Button>
+        </Typography>
       </div>
     );
-  } else {
-    getAllCategories();
   }
 }
 
