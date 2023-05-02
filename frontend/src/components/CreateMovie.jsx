@@ -48,7 +48,7 @@ function CreateMovie(props) {
       .get(
         `https://imdb-api.com/en/API/${
           props.selectedType === "Movie" ? "SearchMovie" : "SearchSeries"
-        }/pk_n23jchy4iuj8g6vap/${userInput}`
+        }/${process.env.REACT_APP_IMDB_API_KEY}/${userInput}`
       )
       .then((response) => {
         console.log(response.data.results);
@@ -58,7 +58,9 @@ function CreateMovie(props) {
 
   function getTitle(id) {
     axios
-      .get(`https://imdb-api.com/en/API/Title/pk_n23jchy4iuj8g6vap/${id}`)
+      .get(
+        `https://imdb-api.com/en/API/Title/${process.env.REACT_APP_IMDB_API_KEY}/${id}`
+      )
       .then((response) => {
         putMovie(response.data);
       });
