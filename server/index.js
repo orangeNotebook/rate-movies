@@ -140,9 +140,10 @@ app.put("/putMovie", (req, res) => {
       [`${inputTerms.title}`],
       [`${inputTerms.description}`],
       [`${inputTerms.image}`],
+      [`${inputTerms.imdbId}`],
     ];
     let insertStatement =
-      "INSERT INTO `media` (`title`, `description`, `image`) VALUES (?, ?, ?); ";
+      "INSERT INTO `media` (`title`, `description`, `image`, `imdbId`) VALUES (?, ?, ?, ?); ";
 
     return { insertStatement: insertStatement, values: values };
   }
@@ -153,7 +154,7 @@ app.put("/putMovie", (req, res) => {
       "INSERT INTO `media-category`(`movie-id`,`category-id`) VALUES";
 
     for (let i = 0; i < inputTerms.categories.length; i++) {
-      values.push([inputTerms.categories[i]]);
+      values.push([inputTerms.categories[i].value]);
       insertStatement +=
         " ((SELECT MAX(ID) FROM media), (SELECT id FROM category where category = ?))";
       if (i === inputTerms.categories.length - 1) {
